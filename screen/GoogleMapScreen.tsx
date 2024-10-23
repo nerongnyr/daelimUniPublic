@@ -6,9 +6,10 @@ import * as Location from "expo-location";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { MainStackScreenList } from "../stack/MainStack";
+import Constants from "expo-constants";
 
-// Google Places API URL 템플릿
-const PLACES_API_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=";
+const apiUrl = Constants?.expoConfig?.extra?.API_URL;
+const apiKey = Constants?.expoConfig?.extra?.API_KEY;
 
 type MarkerProps = {
   latitude: number;
