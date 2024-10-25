@@ -1,23 +1,37 @@
-import { Alert, Button, View, Text } from "react-native";
+import { Alert, Button, View, Text, Switch } from "react-native";
 import styled from "styled-components";
 import * as Notifications from "expo-notifications";
 import { useEffect, useState } from "react";
 import * as Location from "expo-location";
+import App from "../../App";
+import { useTheme } from "../../theme/Theme"; // 경로에 맞게 수정
 
 export default function MyPageScreen() {
   const [hasPermission, setHasPermission] = useState(false);
   const [hasLocationPermission, setHasLocationPermission] = useState(false);
 
+  const { toggleTheme } = useTheme();
+  const [isEnabled, setIsEnabled] = useState(useTheme().isDark);
+  const toggleSwitch = () => {
+    setIsEnabled((previousState) => !previousState);
+    toggleTheme();
+  };
+
   const Container = styled(View)`
     flex: 1;
     justify-content: center;
     align-items: center;
+    color: ${(props) => props.theme.text};
   `;
 
   const VisitList = styled(View)``;
   const Favorites = styled(View)``;
   const Review = styled(View)``;
-  const Setting = styled(View)``;
+  const Setting = styled(View)`
+    flex-direction: row; /* 가로 방향으로 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    margin-top: 20px; /* 상단 마진 추가 (선택 사항) */
+  `;
   const About = styled(View)`
     flex-direction: row; /* 가로 방향으로 정렬 */
     align-items: center; /* 세로 중앙 정렬 */
@@ -27,6 +41,9 @@ export default function MyPageScreen() {
     flex-direction: row; /* 가로 방향으로 정렬 */
     align-items: center; /* 세로 중앙 정렬 */
     margin-top: 20px; /* 상단 마진 추가 (선택 사항) */
+  `;
+  const MyPageText = styled(Text)`
+    color: ${(props) => props.theme.text};
   `;
 
   useEffect(() => {
@@ -70,16 +87,24 @@ export default function MyPageScreen() {
       <VisitList></VisitList>
       <Favorites></Favorites>
       <Review></Review>
-      <Setting></Setting>
+      <Setting>
+        <Switch
+          trackColor={{ false: "#767577", true: "#81b0ff" }}
+          thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+          onValueChange={toggleSwitch}
+          value={isEnabled}
+        />
+        <MyPageText style={{ marginLeft: 10 }}>{isEnabled ? "다크 모드입니다." : "라이트 모드입니다."}</MyPageText>
+      </Setting>
       <About>
         <Button
           title={hasLocationPermission ? "위치 권한이 허용됨" : "위치 권한 요청"}
           onPress={requestLocationPermission}
           disabled={hasLocationPermission}
         />
-        <Text style={{ marginLeft: 10 }}>
+        <MyPageText style={{ marginLeft: 10 }}>
           {hasLocationPermission ? "권한이 허용되었습니다." : "권한이 필요합니다."}
-        </Text>
+        </MyPageText>
       </About>
       <Alarm>
         <Button
@@ -87,7 +112,9 @@ export default function MyPageScreen() {
           onPress={requestPermission}
           disabled={hasPermission}
         />
-        <Text style={{ marginLeft: 10 }}>{hasPermission ? "권한이 허용되었습니다." : "권한이 필요합니다."}</Text>
+        <MyPageText style={{ marginLeft: 10 }}>
+          {hasPermission ? "권한이 허용되었습니다." : "권한이 필요합니다."}
+        </MyPageText>
       </Alarm>
     </Container>
   );
