@@ -29,13 +29,14 @@ export default function MainScreen() {
 
   const testPage = () => nav.navigate("google");
   const tesPage = () => nav.navigate("test");
+  const tePage = () => nav.navigate("MyPage");
 
   return (
     <Container>
       <BtnGoogle onPress={() => testPage()}>
         <BtnTxt> 구글 맵 확인용 </BtnTxt>
       </BtnGoogle>
-      <BtnGoogle onPress={() => tesPage()}>
+      <BtnGoogle onPress={() => tePage()}>
         <BtnTxt> 마크 확인용 </BtnTxt>
       </BtnGoogle>
     </Container>

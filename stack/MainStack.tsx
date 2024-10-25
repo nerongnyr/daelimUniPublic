@@ -3,6 +3,7 @@ import mainScreen from "../screen/MainScreen";
 import googleScreen from "../screen/GoogleMapScreen";
 import testscreen from "../screen/Test";
 import placeDetailScreen from "../screen/PlaceDetailScreen";
+import myPage from "../screen/MyPage/MyPageScreen";
 
 //이동할 스크린 stacknavigator type 지정
 export type MainStackScreenList = {
@@ -10,6 +11,7 @@ export type MainStackScreenList = {
   google: undefined;
   test: undefined;
   PlaceDetail: any;
+  MyPage: any;
 };
 
 //stactnavigator 생성
@@ -23,6 +25,7 @@ export default () => {
       <Stack.Screen name="google" component={googleScreen} />
       <Stack.Screen name="test" component={testscreen} />
       <Stack.Screen name="PlaceDetail" component={placeDetailScreen} />
+      <Stack.Screen name="MyPage" component={myPage} />
     </Stack.Navigator>
   );
 };
