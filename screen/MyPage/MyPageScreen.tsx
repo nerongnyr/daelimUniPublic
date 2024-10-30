@@ -5,6 +5,10 @@ import { useEffect, useState } from "react";
 import * as Location from "expo-location";
 import App from "../../App";
 import { useTheme } from "../../theme/Theme"; // 경로에 맞게 수정
+import { MainStackScreenList } from "../../stack/MainStack";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useNavigation } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function MyPageScreen() {
   const [hasPermission, setHasPermission] = useState(false);
@@ -24,9 +28,22 @@ export default function MyPageScreen() {
     color: ${(props) => props.theme.text};
   `;
 
-  const VisitList = styled(View)``;
-  const Favorites = styled(View)``;
-  const Review = styled(View)``;
+  const VisitList = styled(View)`
+    flex-direction: row; /* 가로 방향으로 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    margin-top: 20px; /* 상단 마진 추가 (선택 사항) */
+  `;
+  const Favorites = styled(View)`
+    flex-direction: row; /* 가로 방향으로 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    margin-top: 20px; /* 상단 마진 추가 (선택 사항) */
+  `;
+  const Review = styled(View)`
+    flex-direction: row; /* 가로 방향으로 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    margin-top: 20px; /* 상단 마진 추가 (선택 사항) */
+  `;
+  const MyPageBtn = styled(TouchableOpacity)``;
   const Setting = styled(View)`
     flex-direction: row; /* 가로 방향으로 정렬 */
     align-items: center; /* 세로 중앙 정렬 */
@@ -82,11 +99,23 @@ export default function MyPageScreen() {
     }
   };
 
+  const nav = useNavigation<NativeStackNavigationProp<MainStackScreenList>>();
+  //위치 이동
+  const nextFavorit = () => nav.navigate("Favorit");
+  const nextVisitList = () => nav.navigate("Visit");
+
   return (
     <Container>
-      <VisitList></VisitList>
-      <Favorites></Favorites>
-      <Review></Review>
+      <VisitList>
+        <MyPageBtn>
+          <MyPageText>방문 기록</MyPageText>
+        </MyPageBtn>
+      </VisitList>
+      <Favorites>
+        <MyPageBtn onPress={nextFavorit}>
+          <MyPageText>즐겨찾기</MyPageText>
+        </MyPageBtn>
+      </Favorites>
       <Setting>
         <Switch
           trackColor={{ false: "#767577", true: "#81b0ff" }}

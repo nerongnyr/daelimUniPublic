@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
+import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
 
 // 기본값을 설정합니다.
 const defaultThemeContext = {
@@ -10,7 +11,7 @@ const ThemeContext = createContext(defaultThemeContext); // 기본값 전달
 
 export const useTheme = () => useContext(ThemeContext);
 
-export const ThemeProvider = ({ children }) => {
+export const ThemeProvider = ({ children }: React.PropsWithChildren<{}>) => {
   const [isDark, setIsDark] = useState(false);
 
   const toggleTheme = () => {
