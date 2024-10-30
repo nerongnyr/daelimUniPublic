@@ -101,21 +101,8 @@ export default function MyPageScreen() {
 
   const nav = useNavigation<NativeStackNavigationProp<MainStackScreenList>>();
   //위치 이동
-  const nextFavorit = () => nav.navigate("Favorit");
-  const nextVisitList = () => nav.navigate("Visit");
-
   return (
     <Container>
-      <VisitList>
-        <MyPageBtn>
-          <MyPageText>방문 기록</MyPageText>
-        </MyPageBtn>
-      </VisitList>
-      <Favorites>
-        <MyPageBtn onPress={nextFavorit}>
-          <MyPageText>즐겨찾기</MyPageText>
-        </MyPageBtn>
-      </Favorites>
       <Setting>
         <Switch
           trackColor={{ false: "#767577", true: "#81b0ff" }}
