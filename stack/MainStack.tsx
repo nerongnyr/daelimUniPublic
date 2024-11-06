@@ -7,14 +7,13 @@ import { Text, TouchableOpacity } from "react-native";
 import styled from "styled-components";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useNavigation } from "@react-navigation/native";
-import VisitListScreen from "../screen/MyPage/VisitList/VisitListScreen";
-import FavoritScreen from "../screen/MyPage/fav/FavoritScreen";
 import MainScreen from "../screen/main-screen";
 import TestScreen from "../screen/test/test-screen";
 import EmergencyRoomScreen from "../screen/emergency-room/emergency-room-screen";
 import FirstAidScreen from "../screen/first-aid/first-aid-screen";
 import BookmarkScreen from "../screen/bookmark/bookmark-screen";
 import EmergencyConditionSearchScreen from "../screen/emergency-condition-search/emergency-condition-search-screen";
+import EmergencyRoomList from "../screen/emergencyList/EmergencyList";
 
 //이동할 스크린 stacknavigator type 지정
 export type MainStackScreenList = {
@@ -30,6 +29,7 @@ export type MainStackScreenList = {
   FirstAidScreen: undefined;
   BookmarkScreen: undefined;
   EmergencyConditionSearchScreen: undefined;
+  EmergencyRoomList: undefined;
 };
 
 //stactnavigator 생성
@@ -62,13 +62,18 @@ export default () => {
           title: "마이 페이지",
         }}
       />
-      <Stack.Screen name="Visit" component={VisitListScreen} />
-      <Stack.Screen name="Favorit" component={FavoritScreen} />
       <Stack.Screen name="TestScreen" component={TestScreen} />
       <Stack.Screen name="EmergencyRoomScreen" component={EmergencyRoomScreen} />
       <Stack.Screen name="FirstAidScreen" component={FirstAidScreen} />
       <Stack.Screen name="BookmarkScreen" component={BookmarkScreen} />
       <Stack.Screen name="EmergencyConditionSearchScreen" component={EmergencyConditionSearchScreen} />
+      <Stack.Screen
+        name="EmergencyRoomList"
+        component={EmergencyRoomList}
+        options={{
+          headerShown: true,
+        }}
+      />
     </Stack.Navigator>
   );
 };

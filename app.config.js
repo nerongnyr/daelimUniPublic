@@ -9,6 +9,7 @@ export default {
     extra: {
       API_URL: process.env.API_URL,
       API_KEY: process.env.API_KEY,
+      HAPI_URL: process.env.HAPI_URL,
     },
     orientation: "portrait",
     icon: "./assets/icon.png",

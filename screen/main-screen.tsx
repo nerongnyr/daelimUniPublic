@@ -164,6 +164,7 @@ const MainScreen = () => {
           { title: "응급실조건검색", screen: "EmergencyConditionSearchScreen" },
           { title: "상세페이지(테스트용)", screen: "TestScreen" },
           { title: "테스트용", screen: "MyPage" },
+          { title: "EmergencyRoomList", screen: "EmergencyRoomList" },
         ].map((button) => (
           <ActionButton
             key={button.screen}
