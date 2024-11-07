@@ -20,8 +20,10 @@ const Container = styled(View)`
   align-items: center;
 `;
 
-const TextContainer = styled(View)`
-  flex: 1;
+const TextContainer = styled(View)``;
+const DutyImg = styled(Image)`
+  width: 50px;
+  height: 50px;
 `;
 const DustName = styled(Text)`
   font-size: 16;
@@ -61,7 +63,7 @@ const fetchEmergencyRoomData = async (): Promise<EmergencyRoomData[]> => {
 };
 
 const fetchPlaceImage = async (placeName: string): Promise<string | null> => {
-  const googleApiKey = "YOUR_GOOGLE_API_KEY"; // API 키 설정
+  const googleApiKey = ApiKey; // API 키 설정
   const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${placeName}&key=${googleApiKey}`;
 
   try {
@@ -74,6 +76,7 @@ const fetchPlaceImage = async (placeName: string): Promise<string | null> => {
 
       if (photoReference) {
         const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=${googleApiKey}`;
+        console.log(photoUrl);
         return photoUrl;
       }
     }
@@ -123,7 +126,7 @@ const EmergencyRoomList = () => {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={{ marginBottom: 30 }}>
-            {images[item.dutyName] ? <Image source={{ uri: images[item.dutyName] }} /> : <Text>이미지 없음</Text>}
+            {images[item.dutyName] ? <DutyImg source={{ uri: images[item.dutyName] }} /> : <Text>이미지 없음</Text>}
             <TextContainer>
               <DustName>{item.dutyName}</DustName>
               <DutyTel>{item.dutyTel3}</DutyTel>
