@@ -1,110 +1,69 @@
-import React, { useRef, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  PanResponder,
-  Animated,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
-import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { View, Text, Animated, StyleSheet, Button, TouchableOpacity } from "react-native";
+import useBottomSheet from "./useBottomSheet";
+import { MIN_Y } from "./useBottomSheet";
+import axios from "axios";
+import FilterButton from "./FilterButton";
 
-interface BottomSheetProps {
-  onClose?: () => void;
+// 필터 항목의 타입을 정의합니다.
+interface Filter {
+  iconName: string;
+  id: number;
+  name: string;
 }
 
-const BottomSheet: React.FC<BottomSheetProps> = ({ onClose }) => {
-  const windowHeight = Dimensions.get("window").height;
-  const HEADER_HEIGHT = 50;
-  const HALF_POSITION = windowHeight / 2; // 화면 절반 높이
-  const translateY = useRef(
-    new Animated.Value(windowHeight - HEADER_HEIGHT)
-  ).current;
-  const [isHalfOpen, setIsHalfOpen] = useState(false);
+interface BottomSheetProps {
+  setSelectedFilters: React.Dispatch<React.SetStateAction<string[]>>; // 부모 컴포넌트에서 전달된 prop
+}
 
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponder: (_, gestureState) =>
-        Math.abs(gestureState.dy) > 10,
-      onPanResponderMove: (_, gestureState) => {
-        const newTranslateY = Math.max(
-          HALF_POSITION,
-          gestureState.dy + windowHeight - HEADER_HEIGHT
-        );
-        translateY.setValue(newTranslateY);
-      },
-      onPanResponderRelease: (_, gestureState) => {
-        if (gestureState.dy > 100) {
-          Animated.spring(translateY, {
-            toValue: windowHeight - HEADER_HEIGHT, // 헤더만 보이게
-            useNativeDriver: true,
-          }).start(() => setIsHalfOpen(false));
-        } else {
-          Animated.spring(translateY, {
-            toValue: HALF_POSITION, // 절반 위치로 올리기
-            useNativeDriver: true,
-          }).start(() => setIsHalfOpen(true));
-        }
-      },
-    })
-  ).current;
+const exampleFilters = [
+  { id: 1, name: "내과", iconName: "medical-services" },
+  { id: 2, name: "피부과", iconName: "face" },
+  { id: 3, name: "외과", iconName: "health-and-safety" },
+  // 나머지 필터들...
+];
 
-  const toggleBottomSheet = () => {
-    if (isHalfOpen) {
-      // 현재 절반 위치에 있으므로, 원래 위치로 내리기
-      Animated.spring(translateY, {
-        toValue: windowHeight - HEADER_HEIGHT,
-        useNativeDriver: true,
-      }).start(() => setIsHalfOpen(false));
-    } else {
-      // 현재 원래 위치에 있으므로, 절반 위치로 올리기
-      Animated.spring(translateY, {
-        toValue: HALF_POSITION,
-        useNativeDriver: true,
-      }).start(() => setIsHalfOpen(true));
-    }
+const BottomSheet: React.FC<BottomSheetProps> = ({ setSelectedFilters }) => {
+  const { translateY, panResponder } = useBottomSheet();
+  const [filters, setFilters] = useState<Filter[]>(exampleFilters);
+  const [selectedFilters, setSelectedLocalFilters] = useState<string[]>([]);
+
+  const handleFilter = (filter: string) => {
+    setSelectedLocalFilters((prevFilters) =>
+      prevFilters.includes(filter)
+        ? prevFilters.filter((item) => item !== filter)
+        : [...prevFilters, filter]
+    );
   };
 
-  const ActionButton = styled(TouchableOpacity)`
-    width: 30%;
-    height: 60px;
-    margin-bottom: 10px;
-    background-color: #ff8520;
-    border-radius: 10px;
-    align-items: center;
-    justify-content: center;
-  `;
-
-  const ButtonContainer = styled(View)`
-    padding: 10px;
-    background-color: #f5f5f5;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    position: absolute;
-    left: 0;
-    right: 0;
-  `;
+  useEffect(() => {
+    setSelectedFilters(selectedFilters);
+  }, [selectedFilters, setSelectedFilters]);
 
   return (
     <Animated.View
       style={[styles.bottomSheet, { transform: [{ translateY }] }]}
       {...panResponder.panHandlers}
     >
-      {/* 클릭하여 BottomSheet를 토글하는 머리 부분 */}
-      <TouchableOpacity style={styles.header} onPress={toggleBottomSheet}>
-        <Text style={styles.headerText}>목록보기</Text>
-      </TouchableOpacity>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>목록 보기</Text>
+      </View>
 
-      {/* BottomSheet의 내용 */}
       <View style={styles.content}>
-        <Text>Bottom Sheet Content</Text>
-        <ButtonContainer>
-          <ActionButton></ActionButton>
-          <ActionButton></ActionButton>
-          <ActionButton></ActionButton>
-        </ButtonContainer>
+        <Text>필터를 선택하세요</Text>
+
+        {/* 필터 버튼 렌더링 */}
+          <View style={styles.filterButtons}>
+          {filters.map((filter) => (
+            <FilterButton
+              key={filter.id}
+              label={filter.name}
+              iconName={filter.iconName}
+              onPress={() => handleFilter(filter.name)}
+              selected={selectedFilters.includes(filter.name)}
+            />
+          ))}
+        </View>
       </View>
     </Animated.View>
   );
@@ -115,8 +74,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     right: 0,
-    height: Dimensions.get("window").height,
-    backgroundColor: "white",
+    height: "100%",
+    backgroundColor: "#FFFFFF", // 흰색 배경
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     elevation: 5,
@@ -125,7 +84,7 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#ccc",
+    backgroundColor: "#F2F2F2",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
@@ -135,6 +94,22 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 16,
+  },
+  selected: {
+    backgroundColor: "#58A6FF", // 선택된 상태 색상
+  },
+  buttonText: {
+    color: "#333",
+  },
+  selectedText: {
+    color: "#FFFFFF", // 선택된 상태에서의 텍스트 색상
+  },
+  filterButtons: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    backgroundColor: '#F2F2F2',
+    margin: 5 ,
   },
 });
 

@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { MainStackScreenList } from "../stack/MainStack";
 import Constants from "expo-constants";
+import React from "react";
 
 const apiUrl = Constants?.expoConfig?.extra?.API_URL;
 const apiKey = Constants?.expoConfig?.extra?.API_KEY;

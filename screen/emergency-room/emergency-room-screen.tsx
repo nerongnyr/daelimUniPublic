@@ -6,6 +6,7 @@ import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import axios from "axios";
 import EmergencyRoomData from "./emergency-room-data";
+import React from "react";
 
 const EmergencyRoomScreen = () => {
   const SafeContainer = styled(SafeAreaView)`

@@ -5,6 +5,7 @@ import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import styled from "styled-components/native"; // styled-components 수정
 import BottomSheet from "../bottom-sheet/bottom-sheet";
+import React from "react";
 
 const EmergencyConditionSearchScreen = () => {
   const [location, setLocation] =
@@ -87,7 +88,9 @@ const EmergencyConditionSearchScreen = () => {
         )}
       </MapV>
       {errorMsg && <Text style={{ color: "red" }}>{errorMsg}</Text>}
-      <BottomSheet />
+      <BottomSheet setSelectedFilters={function (value: React.SetStateAction<string[]>): void {
+        throw new Error("Function not implemented.");
+      } } />
     </SafeContainer>
   );
 };

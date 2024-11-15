@@ -1,6 +1,8 @@
 import axios from "axios";
 
 interface EmergencyRoomData {
+  latitude: number;
+  longitude: number;
   id: number;
   name: string;
   location: string;

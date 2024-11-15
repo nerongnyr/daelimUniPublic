@@ -9,6 +9,7 @@ import { MainStackScreenList } from "../../stack/MainStack";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import React from "react";
 
 export default function MyPageScreen() {
   const [hasPermission, setHasPermission] = useState(false);
